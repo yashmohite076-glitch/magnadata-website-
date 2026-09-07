@@ -3,37 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChronoFrame 360° | Cinematic Scroll Animation</title>
-  <meta name="description" content="Ultra smooth 60fps 240-frame scroll animation experience powered by HTML5 Canvas and modern interactive controls." />
+  <title>MagnaData | Building Intelligent Digital Solutions</title>
+  <meta name="description" content="MagnaData builds autonomous AI systems and modern enterprise software solutions." />
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Prevent preloader flash on return navigation -->
+  <script>
+    (function() {
+      try {
+        if (sessionStorage.getItem('magnaFramesLoaded') === 'true') {
+          document.documentElement.classList.add('preload-done');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <!-- Preloader Screen -->
-  <div id="preloader" class="preloader">
-    <div class="preloader-content">
-      <div class="loader-ring">
-        <svg viewBox="0 0 100 100">
-          <circle class="ring-bg" cx="50" cy="50" r="42" />
-          <circle class="ring-progress" id="ring-progress" cx="50" cy="50" r="42" />
+  <div id="preloader" class="preloader" aria-live="polite" aria-label="Loading MagnaData">
+    <!-- Ambient particle background -->
+    <canvas id="loader-particles-canvas" class="loader-particles-canvas"></canvas>
+
+    <!-- Glowing background accent orbs -->
+    <div class="loader-bg-glow glow-1"></div>
+    <div class="loader-bg-glow glow-2"></div>
+
+    <!-- Soft ambient blur glow behind glass card -->
+    <div class="loader-card-blur-glow"></div>
+
+    <!-- Centered Glass Card -->
+    <div class="preloader-content magna-loader-card">
+      <!-- Circular Progress Ring around MagnaData Logo -->
+      <div class="loader-logo-ring-wrapper">
+        <svg class="loader-ring-svg" viewBox="0 0 124 124">
+          <defs>
+            <linearGradient id="magna-ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22D3EE" />
+              <stop offset="100%" stop-color="#2563EB" />
+            </linearGradient>
+            <filter id="magna-ring-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <circle class="ring-bg" cx="62" cy="62" r="52" />
+          <circle class="ring-progress" id="ring-progress" cx="62" cy="62" r="52" />
         </svg>
-        <div class="loader-percent" id="loader-percent">0%</div>
+        <div class="loader-logo-container">
+          <img src="/logo-mark.png" alt="MagnaData" class="loader-logo-img" />
+        </div>
       </div>
+
+      <!-- Heading & Subtitle -->
       <div class="loader-text-group">
-        <h2 class="loader-title">CHRONOFRAME ENGINE</h2>
-        <p class="loader-subtitle" id="loader-status">Preloading 240 ultra-HD frames into canvas cache...</p>
+        <h2 class="loader-title">MAGNADATA</h2>
+        <p class="loader-subtitle">Building Intelligent Digital Solutions</p>
       </div>
-      <div class="loader-bar-track">
-        <div class="loader-bar-fill" id="loader-bar-fill"></div>
-      </div>
-      <div class="loader-stats">
-        <span id="loader-count">0 / 240 Frames</span>
-        <span id="loader-speed">-- MB/s</span>
+
+      <!-- Loading Status & Progress Bar -->
+      <div class="loader-interactive-group">
+        <div class="loader-status-row">
+          <span class="loader-status-text" id="loader-status">Preparing your digital experience...</span>
+          <span class="loader-percent-badge" id="loader-percent">0%</span>
+        </div>
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill" id="loader-bar-fill"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -75,7 +116,7 @@
 
       <!-- Floating Narrative Cards overlaid at scroll positions -->
       <div class="narrative-layer">
-        <div class="narrative-card image-card theme-red card-pos-1" id="card-1">
+        <div class="narrative-card image-card theme-red card-pos-1 hidden-card" id="card-1">
           <div class="ic-icon-wrapper">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="3" width="4" height="4"/><rect x="3" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/><path d="M12 7v4"/><path d="M5 17v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/></svg>
           </div>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CHRONOFRAME - 360° Scroll Animation Engine
+   MAGNADATA - 360° Scroll Animation Engine
    ========================================================================== */
 
 // Configuration Constants
@@ -22,11 +22,11 @@ const state = {
 // DOM Element References
 const DOM = {
   preloader: document.getElementById('preloader'),
+  particlesCanvas: document.getElementById('loader-particles-canvas'),
   ringProgress: document.getElementById('ring-progress'),
   loaderPercent: document.getElementById('loader-percent'),
   loaderStatus: document.getElementById('loader-status'),
   loaderBarFill: document.getElementById('loader-bar-fill'),
-  loaderCount: document.getElementById('loader-count'),
   
   appHeader: document.getElementById('app-header'),
   hdrFrameIndicator: document.getElementById('hdr-frame-indicator'),
@@ -60,13 +60,129 @@ const DOM = {
 const ctx = DOM.canvas.getContext('2d');
 
 /* ==========================================================================
-   1. Frame Preloader Logic
+   1. MagnaData Ambient Particles System
    ========================================================================== */
-function initPreloader() {
-  const alreadyLoaded = sessionStorage.getItem('magnaFramesLoaded');
-  if (alreadyLoaded && DOM.preloader) {
-    DOM.preloader.style.display = 'none';
+let particlesAnimId = null;
+let particles = [];
+
+function initLoaderParticles() {
+  if (!DOM.particlesCanvas) return;
+  const pCtx = DOM.particlesCanvas.getContext('2d');
+  if (!pCtx) return;
+
+  function resize() {
+    if (!DOM.particlesCanvas) return;
+    DOM.particlesCanvas.width = window.innerWidth;
+    DOM.particlesCanvas.height = window.innerHeight;
   }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  const colors = ['#22D3EE', '#2563EB', '#F8FAFC', '#38BDF8'];
+  const count = Math.min(45, Math.floor(window.innerWidth / 30));
+  particles = [];
+
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * DOM.particlesCanvas.width,
+      y: Math.random() * DOM.particlesCanvas.height,
+      radius: 0.8 + Math.random() * 1.6,
+      alpha: 0.15 + Math.random() * 0.55,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -0.15 - Math.random() * 0.35,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    });
+  }
+
+  function renderParticles() {
+    if (!DOM.particlesCanvas) return;
+    pCtx.clearRect(0, 0, DOM.particlesCanvas.width, DOM.particlesCanvas.height);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0) p.x = DOM.particlesCanvas.width;
+      if (p.x > DOM.particlesCanvas.width) p.x = 0;
+      if (p.y < 0) p.y = DOM.particlesCanvas.height;
+      if (p.y > DOM.particlesCanvas.height) p.y = 0;
+
+      pCtx.save();
+      pCtx.globalAlpha = p.alpha;
+      pCtx.fillStyle = p.color;
+      pCtx.shadowBlur = 8;
+      pCtx.shadowColor = p.color;
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      pCtx.fill();
+      pCtx.restore();
+    }
+
+    particlesAnimId = requestAnimationFrame(renderParticles);
+  }
+
+  renderParticles();
+}
+
+function stopLoaderParticles() {
+  if (particlesAnimId) {
+    cancelAnimationFrame(particlesAnimId);
+    particlesAnimId = null;
+  }
+}
+
+/* ==========================================================================
+   2. MagnaData Brand Preloader Logic
+   ========================================================================== */
+const RING_CIRCUMFERENCE = 326.73; // 2 * PI * 52
+let displayProgress = 0;
+let progressTickerId = null;
+let isPreloaderComplete = false;
+
+function initPreloader() {
+  const alreadyLoaded = sessionStorage.getItem('magnaFramesLoaded') === 'true';
+
+  if (alreadyLoaded) {
+    if (DOM.preloader) {
+      DOM.preloader.style.display = 'none';
+    }
+    document.documentElement.classList.add('preload-done');
+    
+    // Immediately initialize canvas & rendering for instant navigation without glitch
+    setupCanvasDimensions();
+    calculateTargetFrameFromScroll();
+    state.currentFrameIndex = state.targetFrameIndex;
+    
+    for (let i = 0; i < 4; i++) {
+      renderCoreCard(i, 0);
+    }
+    startRenderLoop();
+
+    // Preload frames in background without blocking
+    for (let i = 1; i <= TOTAL_FRAMES; i++) {
+      const img = new Image();
+      img.src = FRAME_PATH_TEMPLATE(i);
+      img.onload = () => {
+        state.loadedCount++;
+        if (i === state.currentFrameIndex || i === 1) {
+          renderCurrentFrame();
+        }
+        if (state.loadedCount === TOTAL_FRAMES) {
+          state.isLoaded = true;
+        }
+      };
+      img.onerror = () => {
+        state.loadedCount++;
+      };
+      state.images.push(img);
+    }
+    return;
+  }
+
+  // First visit in this session: run the premium brand loader
+  initLoaderParticles();
+  startProgressTicker();
 
   for (let i = 1; i <= TOTAL_FRAMES; i++) {
     const img = new Image();
@@ -74,48 +190,94 @@ function initPreloader() {
     
     img.onload = () => {
       state.loadedCount++;
-      if (!alreadyLoaded) updatePreloaderProgress();
-      if (state.loadedCount === TOTAL_FRAMES) {
-        onPreloaderComplete(alreadyLoaded);
-      }
     };
     
     img.onerror = () => {
       state.loadedCount++;
-      if (!alreadyLoaded) updatePreloaderProgress();
-      if (state.loadedCount === TOTAL_FRAMES) {
-        onPreloaderComplete(alreadyLoaded);
-      }
     };
 
     state.images.push(img);
   }
 }
 
-function updatePreloaderProgress() {
-  const percent = Math.min(100, Math.floor((state.loadedCount / TOTAL_FRAMES) * 100));
-  
-  const offset = 264 - (264 * percent) / 100;
-  if (DOM.ringProgress) DOM.ringProgress.style.strokeDashoffset = offset;
-  if (DOM.loaderPercent) DOM.loaderPercent.textContent = `${percent}%`;
-  if (DOM.loaderBarFill) DOM.loaderBarFill.style.width = `${percent}%`;
-  if (DOM.loaderCount) DOM.loaderCount.textContent = `${state.loadedCount} / ${TOTAL_FRAMES} Frames`;
+function startProgressTicker() {
+  function tick() {
+    const targetPercent = Math.min(100, (state.loadedCount / TOTAL_FRAMES) * 100);
+
+    if (displayProgress < targetPercent) {
+      const delta = targetPercent - displayProgress;
+      // Smooth 60 FPS interpolation
+      const step = Math.min(Math.max(delta * 0.08, 0.4), 2.5);
+      displayProgress = Math.min(100, displayProgress + step);
+      updateLoaderUI(displayProgress);
+    }
+
+    if (displayProgress >= 100 && state.loadedCount === TOTAL_FRAMES) {
+      updateLoaderUI(100);
+      if (!isPreloaderComplete) {
+        isPreloaderComplete = true;
+        onPreloaderComplete(false);
+      }
+    } else {
+      progressTickerId = requestAnimationFrame(tick);
+    }
+  }
+
+  progressTickerId = requestAnimationFrame(tick);
+}
+
+function updateLoaderUI(percent) {
+  const rounded = Math.floor(percent);
+
+  // SVG Circular Ring stroke
+  if (DOM.ringProgress) {
+    const offset = RING_CIRCUMFERENCE - (RING_CIRCUMFERENCE * percent) / 100;
+    DOM.ringProgress.style.strokeDashoffset = offset;
+  }
+
+  // Percentage badge
+  if (DOM.loaderPercent) {
+    DOM.loaderPercent.textContent = `${rounded}%`;
+  }
+
+  // Loading bar fill
+  if (DOM.loaderBarFill) {
+    DOM.loaderBarFill.style.width = `${percent}%`;
+  }
+
+  // Loading text update
+  if (DOM.loaderStatus) {
+    if (percent >= 100) {
+      DOM.loaderStatus.textContent = 'Please wait, taking you to MagnaData...';
+    } else {
+      DOM.loaderStatus.textContent = 'Preparing your digital experience...';
+    }
+  }
 }
 
 function onPreloaderComplete(alreadyLoaded) {
   state.isLoaded = true;
   sessionStorage.setItem('magnaFramesLoaded', 'true');
 
-  if (!alreadyLoaded && DOM.loaderStatus) {
-    DOM.loaderStatus.textContent = 'All 240 frames preloaded!';
+  if (progressTickerId) {
+    cancelAnimationFrame(progressTickerId);
+    progressTickerId = null;
   }
-  
-  const delay = alreadyLoaded ? 0 : 300;
+
+  const delay = alreadyLoaded ? 0 : 400;
   
   setTimeout(() => {
     if (DOM.preloader && !alreadyLoaded) {
       DOM.preloader.classList.add('fade-out');
-      setTimeout(() => DOM.preloader.style.display = 'none', 800);
+
+      // Trigger smooth hero fade-up entrance
+      if (DOM.scrollTrack) DOM.scrollTrack.classList.add('hero-reveal-anim');
+      if (DOM.appHeader) DOM.appHeader.classList.add('header-reveal-anim');
+
+      setTimeout(() => {
+        DOM.preloader.style.display = 'none';
+        stopLoaderParticles();
+      }, 750);
     }
     
     setupCanvasDimensions();
@@ -152,8 +314,12 @@ function setupCanvasDimensions() {
 
 function renderFrameIndex(frameIdx) {
   const roundedIdx = Math.min(TOTAL_FRAMES, Math.max(1, Math.round(frameIdx)));
-  const img = state.images[roundedIdx - 1];
   
+  // Update Header Progress & Narrative Cards based on current scroll position
+  updateHUDInfo(roundedIdx);
+  updateNarrativeCards(roundedIdx);
+
+  const img = state.images[roundedIdx - 1];
   if (!img || !img.complete || img.naturalWidth === 0) return;
   
   const viewportW = window.innerWidth;
@@ -172,10 +338,6 @@ function renderFrameIndex(frameIdx) {
   const drawY = (viewportH - drawH) / 2;
   
   ctx.drawImage(img, drawX, drawY, drawW, drawH);
-  
-  // Update Header Info & Narrative Cards
-  updateHUDInfo(roundedIdx);
-  updateNarrativeCards(roundedIdx);
 }
 
 function renderCurrentFrame() {
@@ -330,10 +492,11 @@ function updateHUDInfo(frameIdx) {
 }
 
 function updateNarrativeCards(frameIdx) {
-  setCardVisible(DOM.card1, frameIdx >= 96 && frameIdx <= 126);
-  setCardVisible(DOM.card2, frameIdx >= 130 && frameIdx <= 160);
-  setCardVisible(DOM.card3, frameIdx >= 164 && frameIdx <= 194);
-  setCardVisible(DOM.card4, frameIdx >= 198 && frameIdx <= 228);
+  // Card 1 pops up after user scrolls 30% (30% of 240 frames = 72)
+  setCardVisible(DOM.card1, frameIdx >= 72 && frameIdx <= 118);
+  setCardVisible(DOM.card2, frameIdx >= 122 && frameIdx <= 158);
+  setCardVisible(DOM.card3, frameIdx >= 162 && frameIdx <= 194);
+  setCardVisible(DOM.card4, frameIdx >= 198 && frameIdx <= 232);
 }
 
 function setCardVisible(cardEl, isVisible) {
