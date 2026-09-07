@@ -3,31 +3,31 @@
    ========================================================================== */
 
 :root {
-  /* Color Palette - Dark Obsidian Theme */
-  --bg-primary: #0a0b0e;
-  --bg-secondary: #12141a;
-  --bg-glass: rgba(18, 20, 26, 0.75);
-  --bg-glass-hover: rgba(28, 32, 42, 0.85);
+  /* Color Palette - MagnaData Brand: White, Red, Blue on Dark Navy */
+  --bg-primary: #0f1623;
+  --bg-secondary: #18202f;
+  --bg-glass: rgba(18, 26, 46, 0.78);
+  --bg-glass-hover: rgba(26, 36, 60, 0.88);
   
-  --accent-cyan: #00f2fe;
-  --accent-blue: #4facfe;
-  --accent-glow: rgba(0, 242, 254, 0.25);
-  --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --accent-cyan: #E8192C;
+  --accent-blue: #1A4BDB;
+  --accent-glow: rgba(232, 25, 44, 0.25);
+  --accent-gradient: linear-gradient(135deg, #E8192C 0%, #1A4BDB 100%);
   
-  --text-main: #f0f3f8;
-  --text-muted: #8e99ac;
-  --text-dim: #5c667a;
+  --text-main: #F8FAFC;
+  --text-muted: #9aaccc;
+  --text-dim: #5c6e8a;
   
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(0, 242, 254, 0.4);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-glow: rgba(232, 25, 44, 0.45);
   
-  --shadow-hud: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.05);
-  --shadow-card: 0 16px 32px rgba(0, 0, 0, 0.5);
+  --shadow-hud: 0 20px 40px rgba(0, 0, 0, 0.55), 0 0 20px rgba(232, 25, 44, 0.06);
+  --shadow-card: 0 16px 32px rgba(0, 0, 0, 0.4);
   
   /* Navbar glass backgrounds */
-  --nav-glass: rgba(18, 20, 26, 0.65);
-  --nav-glass-shrunk: rgba(18, 20, 26, 0.82);
-  --nav-glass-hover: rgba(18, 20, 26, 0.75);
+  --nav-glass: rgba(15, 22, 35, 0.72);
+  --nav-glass-shrunk: rgba(15, 22, 35, 0.88);
+  --nav-glass-hover: rgba(15, 22, 35, 0.82);
   
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -142,15 +142,15 @@ body {
    MagnaData Premium Brand Loader Component
    ========================================================================== */
 :root {
-  --magna-bg: #050816;
-  --magna-cyan: #22D3EE;
-  --magna-blue: #2563EB;
+  --magna-bg: #0f1623;
+  --magna-cyan: #E8192C;
+  --magna-blue: #1A4BDB;
   --magna-white: #F8FAFC;
-  --magna-muted: #94A3B8;
-  --magna-glass: rgba(10, 15, 30, 0.72);
-  --magna-glass-border: rgba(255, 255, 255, 0.08);
-  --magna-gradient: linear-gradient(135deg, #22D3EE 0%, #2563EB 100%);
-  --magna-glow: rgba(34, 211, 238, 0.35);
+  --magna-muted: #9aaccc;
+  --magna-glass: rgba(18, 26, 46, 0.82);
+  --magna-glass-border: rgba(255, 255, 255, 0.09);
+  --magna-gradient: linear-gradient(135deg, #E8192C 0%, #1A4BDB 100%);
+  --magna-glow: rgba(232, 25, 44, 0.35);
 }
 
 .preloader {
@@ -207,7 +207,7 @@ html.preload-done #preloader,
   height: 550px;
   top: 10%;
   left: 15%;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, rgba(37, 99, 235, 0.04) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(232, 25, 44, 0.18) 0%, rgba(26, 75, 219, 0.08) 50%, transparent 70%);
   filter: blur(60px);
   animation: orbFloat1 16s ease-in-out infinite alternate;
 }
@@ -217,7 +217,7 @@ html.preload-done #preloader,
   height: 650px;
   bottom: 8%;
   right: 12%;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(34, 211, 238, 0.04) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(26, 75, 219, 0.16) 0%, rgba(232, 25, 44, 0.04) 50%, transparent 70%);
   filter: blur(75px);
   animation: orbFloat2 20s ease-in-out infinite alternate;
 }
@@ -242,7 +242,7 @@ html.preload-done #preloader,
   transform: translate(-50%, -50%);
   width: 380px;
   height: 380px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.22) 0%, rgba(37, 99, 235, 0.16) 45%, transparent 72%);
+  background: radial-gradient(circle, rgba(232, 25, 44, 0.20) 0%, rgba(26, 75, 219, 0.14) 45%, transparent 72%);
   filter: blur(45px);
   pointer-events: none;
   z-index: 1;
@@ -272,7 +272,7 @@ html.preload-done #preloader,
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 28px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65), 
-              0 0 40px rgba(34, 211, 238, 0.06),
+              0 0 40px rgba(232, 25, 44, 0.06),
               inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
@@ -309,7 +309,7 @@ html.preload-done #preloader,
   stroke-linecap: round;
   stroke-dasharray: 326.73;
   stroke-dashoffset: 326.73;
-  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.55));
+  filter: drop-shadow(0 0 6px rgba(232, 25, 44, 0.55));
   transition: stroke-dashoffset 0.12s linear;
 }
 
@@ -327,7 +327,7 @@ html.preload-done #preloader,
   width: 48px;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.5)) drop-shadow(0 0 24px rgba(37, 99, 235, 0.3));
+  filter: drop-shadow(0 0 14px rgba(232, 25, 44, 0.5)) drop-shadow(0 0 24px rgba(26, 75, 219, 0.3));
   animation: logoSubtlePulse 3.5s ease-in-out infinite alternate;
 }
 
@@ -345,11 +345,11 @@ html.preload-done #preloader,
 @keyframes logoSubtlePulse {
   0% {
     transform: scale(1);
-    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.45));
+    filter: drop-shadow(0 0 12px rgba(232, 25, 44, 0.45));
   }
   100% {
     transform: scale(1.04);
-    filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.7)) drop-shadow(0 0 30px rgba(37, 99, 235, 0.4));
+    filter: drop-shadow(0 0 20px rgba(232, 25, 44, 0.7)) drop-shadow(0 0 30px rgba(26, 75, 219, 0.4));
   }
 }
 
@@ -917,11 +917,11 @@ canvas#animation-canvas:active {
 
 .image-card:hover {
   transform: translateY(-8px) scale(1.02) !important;
-  border-color: rgba(0, 242, 254, 0.3);
+  border-color: rgba(232, 25, 44, 0.3);
   box-shadow: 
     0 24px 48px rgba(0, 0, 0, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    0 0 50px rgba(0, 242, 254, 0.15);
+    0 0 50px rgba(232, 25, 44, 0.12);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
 }
@@ -1539,7 +1539,7 @@ kbd {
 /* Premium Hover Interactions */
 .core-card:hover {
   transform: translateY(-10px) !important; /* overrides inline transform softly */
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(232, 25, 44, 0.15);
   border-color: var(--border-glow);
 }
 
@@ -1642,7 +1642,7 @@ kbd {
   max-width: 500px;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 242, 254, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(232, 25, 44, 0.08);
   border: 1px solid var(--border-subtle);
 }
 .intro-visual-img {
@@ -1676,15 +1676,15 @@ kbd {
 }
 .stat-box:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 242, 254, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 242, 254, 0.05);
+  border-color: rgba(232, 25, 44, 0.3);
+  box-shadow: 0 10px 30px rgba(232, 25, 44, 0.08);
 }
 .stat-val {
   font-size: 3rem;
   font-weight: 800;
   color: var(--accent-cyan);
   margin-bottom: 8px;
-  text-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+  text-shadow: 0 0 15px rgba(232, 25, 44, 0.25);
 }
 .stat-label {
   font-size: 0.95rem;
@@ -1726,20 +1726,20 @@ kbd {
 .prod-icon-wrapper {
   width: 56px;
   height: 56px;
-  background: rgba(0, 242, 254, 0.08);
+  background: rgba(232, 25, 44, 0.08);
   color: var(--accent-cyan);
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
-  border: 1px solid rgba(0, 242, 254, 0.15);
+  border: 1px solid rgba(232, 25, 44, 0.15);
   transition: all 0.3s ease;
 }
 .product-card:hover .prod-icon-wrapper {
   transform: scale(1.1);
-  background: rgba(0, 242, 254, 0.15);
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+  background: rgba(232, 25, 44, 0.15);
+  box-shadow: 0 0 20px rgba(232, 25, 44, 0.2);
 }
 .prod-title {
   font-size: 1.4rem;
@@ -1787,7 +1787,7 @@ kbd {
   cursor: default;
 }
 .ind-badge:hover {
-  background: rgba(0, 242, 254, 0.1);
+  background: rgba(232, 25, 44, 0.1);
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
   transform: scale(1.05);
@@ -1868,7 +1868,7 @@ kbd {
 
 /* Footer */
 .site-footer {
-  background: #050608;
+  background: #0c1220;
   padding: 80px 0 40px;
   position: relative;
   z-index: 10;

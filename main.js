@@ -78,7 +78,7 @@ function initLoaderParticles() {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  const colors = ['#22D3EE', '#2563EB', '#F8FAFC', '#38BDF8'];
+  const colors = ['#E8192C', '#1A4BDB', '#F8FAFC', '#C01020'];
   const count = Math.min(45, Math.floor(window.innerWidth / 30));
   particles = [];
 
