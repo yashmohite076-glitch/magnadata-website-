@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChronoFrame 360° | Cinematic Scroll Animation</title>
+  <meta name="description" content="Ultra smooth 60fps 240-frame scroll animation experience powered by HTML5 Canvas and modern interactive controls." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script type="module" crossorigin src="/assets/main-cdddnUPR.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-BasPhPvU.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-zNCQTxVz.css">
+</head>
+<body>
+  <!-- Preloader Screen -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="loader-ring">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="42" />
+          <circle class="ring-progress" id="ring-progress" cx="50" cy="50" r="42" />
+        </svg>
+        <div class="loader-percent" id="loader-percent">0%</div>
+      </div>
+      <div class="loader-text-group">
+        <h2 class="loader-title">CHRONOFRAME ENGINE</h2>
+        <p class="loader-subtitle" id="loader-status">Preloading 240 ultra-HD frames into canvas cache...</p>
+      </div>
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill" id="loader-bar-fill"></div>
+      </div>
+      <div class="loader-stats">
+        <span id="loader-count">0 / 240 Frames</span>
+        <span id="loader-speed">-- MB/s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="app-header" id="app-header">
+    <div class="header-left">
+      <a href="/" class="brand-logo-link">
+        <img src="/logo.png" alt="MagnaData Logo" class="brand-logo-img" />
+      </a>
+    </div>
+    
+    <div class="header-center">
+      <nav class="main-nav">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="/products.html" class="nav-link">Product</a>
+        <a href="#" class="nav-link">Services</a>
+        <a href="#" class="nav-link">Industries</a>
+        <a href="#" class="nav-link">Customers</a>
+        <a href="#" class="nav-link">Blog</a>
+        <a href="#" class="nav-link">About us</a>
+        <a href="#" class="nav-link">Contact us</a>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <button id="theme-btn" class="icon-btn" title="Change Visual Theme" aria-label="Change Visual Theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Scroll Container Track (Height drives frame sequence) -->
+  <div class="scroll-track" id="scroll-track">
+    <!-- Sticky Viewport Wrapper -->
+    <div class="sticky-viewport" id="sticky-viewport">
+      <!-- Main HTML5 Canvas -->
+      <canvas id="animation-canvas"></canvas>
+
+      <!-- Floating Narrative Cards overlaid at scroll positions -->
+      <div class="narrative-layer">
+        <div class="narrative-card image-card theme-red card-pos-1" id="card-1">
+          <div class="ic-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="3" width="4" height="4"/><rect x="3" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/><path d="M12 7v4"/><path d="M5 17v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/></svg>
+          </div>
+          <h2 class="ic-title">ERP Solutions</h2>
+          <p class="ic-desc">Next-generation enterprise resource planning powered by predictive analytics.</p>
+          <div class="card-arrow-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+
+        <div class="narrative-card image-card theme-blue card-pos-2 hidden-card" id="card-2">
+          <div class="ic-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+          </div>
+          <h2 class="ic-title">InterviewBot</h2>
+          <p class="ic-desc">Automated, AI-driven candidate screening and preliminary interview assessment.</p>
+          <div class="card-arrow-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+
+        <div class="narrative-card image-card theme-red card-pos-3 hidden-card" id="card-3">
+          <div class="ic-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          </div>
+          <h2 class="ic-title">InteractHub</h2>
+          <p class="ic-desc">Centralized omni-channel customer interaction platform with sentiment analysis.</p>
+          <div class="card-arrow-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+
+        <div class="narrative-card image-card theme-red card-pos-4 hidden-card" id="card-4">
+          <div class="ic-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          </div>
+          <h2 class="ic-title">TeleBot</h2>
+          <p class="ic-desc">Intelligent telecommunication assistant for customer routing and query resolution.</p>
+          <div class="card-arrow-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Intro & Stats Section -->
+  <section class="intro-stats-section">
+    <div class="container intro-container">
+      <div class="intro-text-column">
+        <h2 class="intro-heading">Intelligent Outcomes with AI</h2>
+        <p class="intro-desc">MagnaData builds autonomous systems that generate insights, automate decisions, and optimize operations in real time. We empower organizations to unlock the full potential of their data through scalable architectures and AI-driven technology.</p>
+        
+        <div class="intro-stats-grid">
+          <div class="stat-box">
+            <div class="stat-val">6+</div>
+            <div class="stat-label">AI Products</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">3</div>
+            <div class="stat-label">Core Services</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">5+</div>
+            <div class="stat-label">Industries Served</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">100%</div>
+            <div class="stat-label">AI Capability</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="intro-visual-column">
+        <div class="visual-wrapper">
+          <img src="/assets/ai_network-CHfyq7cA.png" alt="AI Network" class="intro-visual-img" />
+          <div class="visual-overlay-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Capabilities Section (Scroll-synced) -->
+  <section class="core-capabilities" id="core-caps">
+    <div class="core-sticky">
+      <!-- Background Elements -->
+      <div class="core-bg-particles"></div>
+      <div class="core-bg-network"></div>
+
+      <div class="core-content-wrapper">
+        <div class="core-header">
+          <div class="section-label">CORE CAPABILITIES</div>
+          <h2 class="core-title">MagnaData helps enterprises modernize operations through Data Engineering, AI Integration, and Intelligent Automation.</h2>
+        </div>
+
+        <div class="core-cards-grid">
+          <!-- Card 1 -->
+          <div class="core-card" id="cc-1">
+            <div class="card-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+            </div>
+            <h3 class="card-heading">Data Engineering</h3>
+            <p class="card-text">Structuring, cleaning, and piping disparate data sources into unified, high-performance data lakes ready for advanced analytics.</p>
+            <div class="card-arrow">Learn More &rarr;</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="core-card" id="cc-2">
+            <div class="card-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <h3 class="card-heading">Intelligence Integration</h3>
+            <p class="card-text">Seamlessly embedding predictive models, natural language processing, and machine learning algorithms into your existing operational workflows.</p>
+            <div class="card-arrow">Learn More &rarr;</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="core-card" id="cc-3">
+            <div class="card-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <h3 class="card-heading">Intelligent Automation</h3>
+            <p class="card-text">Replacing manual, repetitive tasks with autonomous software agents that learn and adapt, drastically reducing operational overhead.</p>
+            <div class="card-arrow">Learn More &rarr;</div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="core-card" id="cc-4">
+            <div class="card-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="card-heading">Custom Solutions</h3>
+            <p class="card-text">Architecting bespoke, proprietary software solutions tailored to highly specific enterprise challenges and industry requirements.</p>
+            <div class="card-arrow">Learn More &rarr;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Product Suite Section -->
+  <section class="core-products-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 class="section-title">Core Product Suite</h2>
+        <p class="section-subtitle">Modular, scalable AI solutions tailored for complex enterprise environments.</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="prod-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="3" width="4" height="4"/><rect x="3" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/><path d="M12 7v4"/><path d="M5 17v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/></svg>
+          </div>
+          <h3 class="prod-title">ERP Solutions</h3>
+          <p class="prod-desc">Next-generation enterprise resource planning powered by predictive analytics.</p>
+        </div>
+        <div class="product-card">
+          <div class="prod-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+          </div>
+          <h3 class="prod-title">InterviewBot</h3>
+          <p class="prod-desc">Automated, AI-driven candidate screening and preliminary interview assessment.</p>
+        </div>
+        <div class="product-card">
+          <div class="prod-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          </div>
+          <h3 class="prod-title">InteractHub</h3>
+          <p class="prod-desc">Centralized omni-channel customer interaction platform with sentiment analysis.</p>
+        </div>
+        <div class="product-card">
+          <div class="prod-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          </div>
+          <h3 class="prod-title">TeleBot</h3>
+          <p class="prod-desc">Intelligent telecommunication assistant for customer routing and query resolution.</p>
+        </div>
+        <div class="product-card">
+          <div class="prod-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+          </div>
+          <h3 class="prod-title">EA Bot</h3>
+          <p class="prod-desc">Executive Assistant AI designed for C-suite scheduling, briefing, and task management.</p>
+        </div>
+        <div class="product-card">
+          <div class="prod-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 class="prod-title">Infographic Platform</h3>
+          <p class="prod-desc">Automated translation of complex datasets into board-ready visual narratives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries We Serve Section -->
+  <section class="industries-section">
+    <div class="container industries-container">
+      <div class="ind-content">
+        <div class="section-label">INDUSTRIES WE SERVE</div>
+        <h2 class="section-title">Tailored Intelligence Across Industries</h2>
+        <p class="section-desc">We deploy specialized AI ecosystems configured for the unique operational demands of GCCs, Manufacturing, Pharma, EdTech, and FINTECH. Our models are trained to optimize sector-specific workflows securely and at scale.</p>
+      </div>
+      <div class="ind-badges">
+        <span class="ind-badge">GCCs</span>
+        <span class="ind-badge">Manufacturing</span>
+        <span class="ind-badge">Pharmaceuticals</span>
+        <span class="ind-badge">EdTech</span>
+        <span class="ind-badge">FinTech</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container cta-container">
+      <h2 class="cta-heading">Ready to Put Your Data to Work?</h2>
+      <div class="cta-buttons">
+        <button class="btn btn-primary">Book a Free Consultation</button>
+        <button class="btn btn-secondary" onclick="window.location.href='/products.html'">Explore Our Products</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="/" class="brand-logo-link" style="margin-bottom: 20px; display: inline-block;">
+            <img src="/logo.png" alt="MagnaData Logo" class="brand-logo-img" />
+          </a>
+          <p class="footer-desc">MagnaData is a data engineering and AI company helping enterprises modernize operations through intelligent automation, scalable infrastructure, and AI-powered systems.</p>
+        </div>
+        <div class="footer-nav-col">
+          <h4 class="footer-title">Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Industries</a>
+          <a href="#">Why MagnaData</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="footer-nav-col">
+          <h4 class="footer-title">Services</h4>
+          <a href="#">Data Migration</a>
+          <a href="#">AI Automation</a>
+          <a href="#">Data & Insights</a>
+          <a href="#">Support</a>
+        </div>
+        <div class="footer-nav-col">
+          <h4 class="footer-title">Products</h4>
+          <a href="/products.html#erp-solutions">ERP Solutions</a>
+          <a href="/products.html#interviewbot">InterviewBot</a>
+          <a href="/products.html#telebot">TeleBot</a>
+          <a href="/products.html#interacthub">InteractHub</a>
+          <a href="/products.html#eabot">EA Bot</a>
+          <a href="/products.html#infographic">Infographic Platform</a>
+        </div>
+        <div class="footer-nav-col">
+          <h4 class="footer-title">Industries</h4>
+          <a href="#">GCC</a>
+          <a href="#">Manufacturing</a>
+          <a href="#">Pharmaceuticals</a>
+          <a href="#">EdTech</a>
+          <a href="#">FINTECH</a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="footer-contact">
+          <p><strong>Contact:</strong> admin@magnadata.in</p>
+          <p>We respond within 24 hours.</p>
+          <div class="footer-buttons" style="margin-top: 15px;">
+            <button class="btn btn-outline-sm">Book Consultation</button>
+            <button class="btn btn-outline-sm" onclick="window.location.href='/products.html'">Explore Products</button>
+          </div>
+        </div>
+        <div class="footer-links-row">
+          <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Security</a>
+            <a href="#">Support</a>
+          </div>
+          <div class="copyright">
+            © 2026 MagnaData Enterprise. All rights reserved.
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom Cursor Tracker (Active after Hero Scroll) -->
+  <div id="cursor-tracker" class="cursor-tracker">
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+  </div>
+
+</body>
+</html>
