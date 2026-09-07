@@ -4,8 +4,8 @@
 
 :root {
   /* Color Palette - MagnaData Brand: White, Red, Blue on Dark Navy */
-  --bg-primary: #0f1623;
-  --bg-secondary: #18202f;
+  --bg-primary: #080d18;
+  --bg-secondary: #101828;
   --bg-glass: rgba(18, 26, 46, 0.78);
   --bg-glass-hover: rgba(26, 36, 60, 0.88);
   
@@ -142,22 +142,29 @@ body {
    MagnaData Premium Brand Loader Component
    ========================================================================== */
 :root {
-  --magna-bg: #0f1623;
+  --magna-bg: #080d18;
   --magna-cyan: #E8192C;
   --magna-blue: #1A4BDB;
   --magna-white: #F8FAFC;
   --magna-muted: #9aaccc;
-  --magna-glass: rgba(18, 26, 46, 0.82);
-  --magna-glass-border: rgba(255, 255, 255, 0.09);
+  --magna-glass: rgba(10, 16, 35, 0.88);
+  --magna-glass-border: rgba(255, 255, 255, 0.14);
   --magna-gradient: linear-gradient(135deg, #E8192C 0%, #1A4BDB 100%);
-  --magna-glow: rgba(232, 25, 44, 0.35);
+  --magna-glow: rgba(232, 25, 44, 0.45);
 }
 
 .preloader {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background-color: var(--magna-bg);
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 120% 80% at 10% 90%, rgba(26, 75, 219, 0.55) 0%, transparent 50%),
+    radial-gradient(ellipse 120% 80% at 90% 10%, rgba(232, 25, 44, 0.50) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 80% 80%, rgba(26, 75, 219, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(232, 25, 44, 0.20) 0%, transparent 50%),
+    #04080f;
+  animation: bgShift 12s ease-in-out infinite alternate;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -166,6 +173,36 @@ body {
               visibility 0.7s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
+}
+
+@keyframes bgShift {
+  0% {
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 120% 80% at 10% 90%, rgba(26, 75, 219, 0.55) 0%, transparent 50%),
+      radial-gradient(ellipse 120% 80% at 90% 10%, rgba(232, 25, 44, 0.50) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 80% 80%, rgba(26, 75, 219, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 20% 20%, rgba(232, 25, 44, 0.20) 0%, transparent 50%),
+      #04080f;
+  }
+  50% {
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255, 255, 255, 0.09) 0%, transparent 55%),
+      radial-gradient(ellipse 120% 80% at 30% 70%, rgba(26, 75, 219, 0.60) 0%, transparent 50%),
+      radial-gradient(ellipse 120% 80% at 70% 30%, rgba(232, 25, 44, 0.55) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 90% 60%, rgba(26, 75, 219, 0.30) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 10% 40%, rgba(232, 25, 44, 0.25) 0%, transparent 50%),
+      #04080f;
+  }
+  100% {
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255, 255, 255, 0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 120% 80% at 5% 100%, rgba(26, 75, 219, 0.50) 0%, transparent 50%),
+      radial-gradient(ellipse 120% 80% at 95% 0%, rgba(232, 25, 44, 0.48) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 70% 90%, rgba(26, 75, 219, 0.28) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 30% 10%, rgba(232, 25, 44, 0.22) 0%, transparent 50%),
+      #04080f;
+  }
 }
 
 html.preload-done #preloader,
@@ -199,39 +236,59 @@ html.preload-done #preloader,
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.6;
+  opacity: 1;
 }
 
+/* Large RED orb — top-right corner */
 .loader-bg-glow.glow-1 {
-  width: 550px;
-  height: 550px;
-  top: 10%;
-  left: 15%;
-  background: radial-gradient(circle, rgba(232, 25, 44, 0.18) 0%, rgba(26, 75, 219, 0.08) 50%, transparent 70%);
-  filter: blur(60px);
-  animation: orbFloat1 16s ease-in-out infinite alternate;
+  width: 800px;
+  height: 800px;
+  top: -15%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(232, 25, 44, 0.55) 0%, rgba(200, 10, 30, 0.30) 35%, transparent 70%);
+  filter: blur(40px);
+  animation: orbFloat1 14s ease-in-out infinite alternate;
 }
 
+/* Large BLUE orb — bottom-left corner */
 .loader-bg-glow.glow-2 {
-  width: 650px;
-  height: 650px;
-  bottom: 8%;
-  right: 12%;
-  background: radial-gradient(circle, rgba(26, 75, 219, 0.16) 0%, rgba(232, 25, 44, 0.04) 50%, transparent 70%);
-  filter: blur(75px);
-  animation: orbFloat2 20s ease-in-out infinite alternate;
+  width: 900px;
+  height: 900px;
+  bottom: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(26, 75, 219, 0.55) 0%, rgba(15, 50, 180, 0.30) 35%, transparent 70%);
+  filter: blur(45px);
+  animation: orbFloat2 18s ease-in-out infinite alternate;
+}
+
+/* White center bloom — makes white the primary glow */
+.loader-bg-glow.glow-3 {
+  width: 600px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 35%, transparent 65%);
+  filter: blur(35px);
+  animation: orbFloat3 10s ease-in-out infinite alternate;
 }
 
 @keyframes orbFloat1 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, -30px) scale(1.08); }
-  100% { transform: translate(-30px, 40px) scale(0.95); }
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.90; }
+  50%  { transform: translate(-60px, 40px) scale(1.12); opacity: 1; }
+  100% { transform: translate(30px, -50px) scale(0.94); opacity: 0.85; }
 }
 
 @keyframes orbFloat2 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-50px, 20px) scale(1.1); }
-  100% { transform: translate(25px, -45px) scale(0.92); }
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.88; }
+  50%  { transform: translate(70px, -35px) scale(1.15); opacity: 1; }
+  100% { transform: translate(-40px, 55px) scale(0.90); opacity: 0.82; }
+}
+
+@keyframes orbFloat3 {
+  0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.70; }
+  50%  { transform: translate(-50%, -52%) scale(1.10); opacity: 1; }
+  100% { transform: translate(-50%, -48%) scale(0.95); opacity: 0.80; }
 }
 
 /* Soft Blur Glow Behind Card */
@@ -240,18 +297,18 @@ html.preload-done #preloader,
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle, rgba(232, 25, 44, 0.20) 0%, rgba(26, 75, 219, 0.14) 45%, transparent 72%);
-  filter: blur(45px);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(232, 25, 44, 0.30) 30%, rgba(26, 75, 219, 0.22) 55%, transparent 78%);
+  filter: blur(35px);
   pointer-events: none;
   z-index: 1;
-  animation: cardGlowPulse 4s ease-in-out infinite alternate;
+  animation: cardGlowPulse 3.5s ease-in-out infinite alternate;
 }
 
 @keyframes cardGlowPulse {
-  0% { opacity: 0.65; transform: translate(-50%, -50%) scale(0.96); }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+  0%   { opacity: 0.7; transform: translate(-50%, -50%) scale(0.94); }
+  100% { opacity: 1;   transform: translate(-50%, -50%) scale(1.06); }
 }
 
 /* Center Glassmorphic Card */

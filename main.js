@@ -78,19 +78,23 @@ function initLoaderParticles() {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  const colors = ['#E8192C', '#1A4BDB', '#F8FAFC', '#C01020'];
-  const count = Math.min(45, Math.floor(window.innerWidth / 30));
+  // White primary, red & blue secondary — matching logo brand palette
+  const colors = ['#F8FAFC', '#F8FAFC', '#F8FAFC', '#F8FAFC', '#E8192C', '#1A4BDB'];
+  const count = Math.min(80, Math.floor(window.innerWidth / 20));
   particles = [];
 
   for (let i = 0; i < count; i++) {
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const isWhite = color === '#F8FAFC' || color === '#ffffff';
     particles.push({
       x: Math.random() * DOM.particlesCanvas.width,
       y: Math.random() * DOM.particlesCanvas.height,
-      radius: 0.8 + Math.random() * 1.6,
-      alpha: 0.15 + Math.random() * 0.55,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: -0.15 - Math.random() * 0.35,
-      color: colors[Math.floor(Math.random() * colors.length)]
+      radius: isWhite ? (0.6 + Math.random() * 2.0) : (1.0 + Math.random() * 2.5),
+      alpha: isWhite ? (0.35 + Math.random() * 0.65) : (0.20 + Math.random() * 0.60),
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -0.10 - Math.random() * 0.25,
+      color,
+      shadowSize: isWhite ? 6 : 14
     });
   }
 
@@ -111,7 +115,7 @@ function initLoaderParticles() {
       pCtx.save();
       pCtx.globalAlpha = p.alpha;
       pCtx.fillStyle = p.color;
-      pCtx.shadowBlur = 8;
+      pCtx.shadowBlur = p.shadowSize;
       pCtx.shadowColor = p.color;
       pCtx.beginPath();
       pCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
